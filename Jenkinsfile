@@ -98,7 +98,11 @@ pipeline {
             steps {
                 script {
                     echo '清理旧的 Docker 镜像，保留最近5个'
-                    bat "docker images fastapi-app --format "{{.ID}}" | tail -n +${KEEP_COUNT} | xargs -r docker rmi -f"
+                    bat """
+                        docker image prune -a -f --filter 'until=24h'
+                        docker system prune -f
+                        docker volume prune -f
+                    """
 
                     echo '清理未使用的 Docker 镜像...'
                     bat "docker image prune -f"
