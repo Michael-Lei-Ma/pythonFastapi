@@ -35,6 +35,7 @@ pipeline {
                     pytest --junitxml=test-results.xml --html=report.html
                 '''
             }
+        }
 
         stage('4. 构建 Docker 镜像') {
             steps {
