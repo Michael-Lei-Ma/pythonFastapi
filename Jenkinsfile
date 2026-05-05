@@ -119,7 +119,7 @@ pipeline {
                     echo ===== 获取镜像列表 =====
 
                     for /f "skip=%KEEP_COUNT% tokens=1" %%i in (
-                        'docker images %DOCKER_IMAGE% --format "{{.Repository}}:{{.Tag}}" --sort=created'
+                        'docker images %DOCKER_IMAGE% --format "{{.Repository}}:{{.Tag}}"'
                     ) do (
                         echo 删除镜像 %%i
                         docker rmi -f %%i
