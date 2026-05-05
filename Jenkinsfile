@@ -115,19 +115,6 @@ pipeline {
                 bat "docker image prune -f"
             }
         }
-
-        stage('9、Push to Docker Hub') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                        def image = docker.build("michaelmacn/fastapi-app:${DOCKER_TAG}")
-                        image.push()
-                        image.push('latest')
-                    }
-                }
-            }
-        }
-
     }
 
     post {
