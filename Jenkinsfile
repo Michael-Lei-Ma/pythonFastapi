@@ -8,6 +8,7 @@ pipeline {
         CONTAINER_NAME = 'py-fastapi-container'
         HOST_PORT = '8000'
         CONTAINER_PORT = '8001'
+        KEEP_COUNT = '5'
     }
 
     stages {
@@ -95,6 +96,11 @@ pipeline {
 
         stage('8. 清理旧镜像') {
             steps {
+                echo '清理旧的 Docker 镜像，保留最近5个'
+                docker images fastapi-app --format "{{.ID}}" | \\
+                                tail -n +${KEEP_COUNT} | \\
+                                xargs -r docker rmi -f
+
                 echo '清理未使用的 Docker 镜像...'
                 bat "docker image prune -f"
             }
