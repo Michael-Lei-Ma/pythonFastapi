@@ -96,13 +96,14 @@ pipeline {
 
         stage('8. 清理旧镜像') {
             steps {
-                echo '清理旧的 Docker 镜像，保留最近5个'
-                docker images fastapi-app --format "{{.ID}}" | \\
-                                tail -n +${KEEP_COUNT} | \\
-                                xargs -r docker rmi -f
-
-                echo '清理未使用的 Docker 镜像...'
-                bat "docker image prune -f"
+                script {
+                    echo '清理旧的 Docker 镜像，保留最近5个'
+                    bat ''
+                    docker images fastapi-app --format "{{.ID}}" | tail -n +${KEEP_COUNT} | xargs -r docker rmi -f
+                    ''
+                    echo '清理未使用的 Docker 镜像...'
+                    bat "docker image prune -f"
+                }
             }
         }
     }
