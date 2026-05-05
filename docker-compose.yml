@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build: .
+    container_name: py-fastapi-container
+    ports:
+      - "8000:8001"
+    restart: unless-stopped
+    environment:
+      - PYTHONUNBUFFERED=1
+      # 可以添加其他环境变量
+      # - DATABASE_URL=sqlite:///./test.db
+    volumes:
+      # 开发时热重载（可选），生产环境建议注释
+      - ./:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
