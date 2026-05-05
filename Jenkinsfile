@@ -67,7 +67,7 @@ pipeline {
                         --name ${CONTAINER_NAME} \
                         -p ${HOST_PORT}:${CONTAINER_PORT} \
                         --restart unless-stopped \
-                        ${DOCKER_IMAGE}:latest
+                        ${DOCKER_IMAGE}:${DOCKER_TAG}
                 """
             }
         }
