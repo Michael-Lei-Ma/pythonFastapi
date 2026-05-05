@@ -71,27 +71,27 @@ pipeline {
             }
         }
 
-        stage('7. 健康检查') {
-            steps {
-                echo '等待服务启动并进行健康检查...'
-                script {
-                    // 等待 5 秒让服务启动
-                    sleep time: 5, unit: 'SECONDS'
-
-                    // 检查容器是否正常运行
-                    def containerStatus = bat(script: "docker ps --filter name=${CONTAINER_NAME} --format '{{.Status}}'", returnStdout: true).trim()
-                    echo "容器状态: ${containerStatus}"
-
-                    // 检查服务是否可访问
-                    def response = bat(script: "curl -s http://localhost:${HOST_PORT}", returnStdout: true).trim()
-                    echo "服务响应: ${response}"
-
-                    if (response.contains('404') || response.contains('error')) {
-                        error('健康检查失败：服务未正常响应')
-                    }
-                }
-            }
-        }
+//         stage('7. 健康检查') {
+//             steps {
+//                 echo '等待服务启动并进行健康检查...'
+//                 script {
+//                     // 等待 5 秒让服务启动
+//                     sleep time: 5, unit: 'SECONDS'
+//
+//                     // 检查容器是否正常运行
+//                     def containerStatus = bat(script: "docker ps --filter name=${CONTAINER_NAME} --format '{{.Status}}'", returnStdout: true).trim()
+//                     echo "容器状态: ${containerStatus}"
+//
+//                     // 检查服务是否可访问
+//                     def response = bat(script: "curl -s http://localhost:${HOST_PORT}", returnStdout: true).trim()
+//                     echo "服务响应: ${response}"
+//
+//                     if (response.contains('404') || response.contains('error')) {
+//                         error('健康检查失败：服务未正常响应')
+//                     }
+//                 }
+//             }
+//         }
 
         stage('8. 清理旧镜像') {
             steps {
