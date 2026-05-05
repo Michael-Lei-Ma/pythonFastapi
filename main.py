@@ -38,4 +38,4 @@ async def list_downloads():
 # 如果直接运行本脚本，启动 uvicorn 服务器
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
