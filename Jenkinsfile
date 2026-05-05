@@ -8,7 +8,7 @@ pipeline {
         CONTAINER_NAME = 'py-fastapi-container'
         HOST_PORT = '8000'
         CONTAINER_PORT = '8001'
-        KEEP_COUNT = '5'
+        KEEP_COUNT = '3'
     }
 
     stages {
