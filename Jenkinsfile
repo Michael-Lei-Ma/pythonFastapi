@@ -22,9 +22,6 @@ pipeline {
             steps {
                 echo '准备 Python 虚拟环境...'
                 bat '''
-                    if exist venv rmdir /s /q venv
-                    py -3.13 -m venv venv
-                    call venv\\Scripts\\activate
                     py -3.13 -m pip install --upgrade pip
                     py -3.13 -m pip install -r requirements.txt
                 '''
@@ -35,22 +32,9 @@ pipeline {
             steps {
                 echo '运行 pytest 单元测试...'
                 bat '''
-                    call venv\\Scripts\\activate
                     pytest --junitxml=test-results.xml --html=report.html
                 '''
             }
-            post {
-                always {
-                    // 收集测试报告
-                    junit 'test-results.xml'
-                    publishHTML([
-                        reportDir: '.',
-                        reportFiles: 'report.html',
-                        reportName: 'Pytest Report'
-                    ])
-                }
-            }
-        }
 
         stage('4. 构建 Docker 镜像') {
             steps {
