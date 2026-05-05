@@ -32,7 +32,7 @@ pipeline {
             steps {
                 echo '运行 pytest 单元测试...'
                 bat '''
-                    pytest --junitxml=test-results.xml --html=report.html
+                    pytest --alluredir=allure-results
                 '''
             }
         }
