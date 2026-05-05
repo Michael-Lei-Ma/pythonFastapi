@@ -94,21 +94,46 @@ pipeline {
 //             }
 //         }
 
+//         stage('8. 清理旧镜像') {
+//             steps {
+//                 script {
+//                     echo '清理旧的 Docker 镜像，保留最近3个'
+//                     bat """
+//                         docker image prune -a -f --filter 'until=24h'
+//                         docker system prune -f
+//                         docker volume prune -f
+//
+//                     """
+//
+//                     echo '清理未使用的 Docker 镜像...'
+//                     bat "docker image prune -f"
+//                 }
+//             }
+//         }
         stage('8. 清理旧镜像') {
             steps {
                 script {
-                    echo '清理旧的 Docker 镜像，保留最近5个'
-                    bat """
-                        docker image prune -a -f --filter 'until=24h'
-                        docker system prune -f
-                        docker volume prune -f
-                    """
+                    echo '清理旧的 Docker 镜像，保留最近3个'
 
-                    echo '清理未使用的 Docker 镜像...'
-                    bat "docker image prune -f"
+                    bat """
+                    echo ===== 获取镜像列表 =====
+
+                    for /f "skip=%KEEP_COUNT% tokens=1" %%i in (
+                        'docker images %DOCKER_IMAGE% --format "{{.Repository}}:{{.Tag}}" --sort=created'
+                    ) do (
+                        echo 删除镜像 %%i
+                        docker rmi -f %%i
+                    )
+
+                    echo ===== 清理悬空镜像 =====
+                    docker image prune -f
+                    """
                 }
             }
         }
+
+
+
     }
 
     post {
